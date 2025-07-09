@@ -78,9 +78,8 @@ export async function generateAINarrative(
   origin: string | null
 ): Promise<AIGeneratedNarrative> {
   try {
-    // フロントエンドアプリケーションではCORS制限によりClaude APIが使用できないため、
-    // 高品質なフォールバック生成を使用します
-    const generatedContent = await simulateAIGeneration(works, origin);
+    // Claude APIを使用して紀行文を生成
+    const generatedContent = await generateWithClaudeAPI(works, origin);
     
     return {
       title: generatedContent.title,
@@ -90,21 +89,36 @@ export async function generateAINarrative(
       isGenerating: false
     };
   } catch (error) {
-    console.error('紀行文生成に失敗しました:', error);
+    console.error('Claude API生成に失敗しました:', error);
     
-    // 最終フォールバック
-    return {
-      title: '建築巡礼の旅',
-      introduction: '素晴らしい建築作品を巡る旅が始まります...',
-      sections: works.map(work => ({
-        work,
-        locationContext: `${work.location.city}の美しい街並みの中で`,
-        narrative: `${work.architect}の「${work.name}」は、${work.year}年に完成した傑作です。${work.overview}`
-      })),
-      conclusion: '建築を通じて文化と歴史を学ぶ、かけがえのない旅の記憶となりました。',
-      isGenerating: false,
-      error: '紀行文生成に失敗しました。基本的な紀行文を表示しています。'
-    };
+    // フォールバック: 高品質な疑似AI生成を使用
+    try {
+      const fallbackContent = await simulateAIGeneration(works, origin);
+      return {
+        title: fallbackContent.title,
+        introduction: fallbackContent.introduction,
+        sections: fallbackContent.sections,
+        conclusion: fallbackContent.conclusion,
+        isGenerating: false,
+        error: 'Claude APIが利用できません。高品質フォールバック生成を使用しています。'
+      };
+    } catch (fallbackError) {
+      console.error('フォールバック生成も失敗しました:', fallbackError);
+      
+      // 最終フォールバック
+      return {
+        title: '建築巡礼の旅',
+        introduction: '素晴らしい建築作品を巡る旅が始まります...',
+        sections: works.map(work => ({
+          work,
+          locationContext: `${work.location.city}の美しい街並みの中で`,
+          narrative: `${work.architect}の「${work.name}」は、${work.year}年に完成した傑作です。${work.overview}`
+        })),
+        conclusion: '建築を通じて文化と歴史を学ぶ、かけがえのない旅の記憶となりました。',
+        isGenerating: false,
+        error: '紀行文生成に失敗しました。基本的な紀行文を表示しています。'
+      };
+    }
   }
 }
 
