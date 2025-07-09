@@ -54,7 +54,7 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
     <div className="bg-white rounded-lg shadow-sm border border-stone-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-stone-800 font-display">
-          🤖 AI生成紀行文
+          📖 旅の紀行文
         </h2>
         <div className="flex items-center gap-2">
           {narrative.isGenerating && (
@@ -144,10 +144,10 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
             </p>
           </div>
 
-          {/* AI Generation Notice */}
+          {/* Generation Notice */}
           <div className="text-center">
             <p className="text-xs text-stone-400">
-              ✨ この紀行文はAIによって動的に生成されました
+              ✨ この紀行文は選択された作品に基づいて動的に生成されました
             </p>
           </div>
         </div>

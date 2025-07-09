@@ -120,7 +120,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
           <table className="text-xs w-full table-auto border-collapse">
             <thead className="bg-gray-100 sticky top-0">
               <tr>
-                <th className="px-2 py-1 text-left whitespace-nowrap">Leg</th>
+                <th className="px-2 py-1 text-left whitespace-nowrap">{t('Leg')}</th>
                 <th className="px-2 py-1 text-center whitespace-nowrap">{t('Mode')}</th>
                 <th className="px-2 py-1 text-right whitespace-nowrap">{t('Distance')}</th>
                 <th className="px-2 py-1 text-right whitespace-nowrap">{t('Time')}</th>

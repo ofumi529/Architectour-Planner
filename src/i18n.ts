@@ -28,6 +28,10 @@ const resources = {
       'Train': 'Train',
       'Bus': 'Bus',
       'Car': 'Car',
+      'Leg': 'Leg',
+      '次へ': 'Next',
+      'いざ、巨匠建築を巡る旅へ': 'Embark on a Journey to Masterpiece Architecture',
+      'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！': 'First, please select your departure country. From there, your pilgrimage to masterpiece architecture begins!',
     },
   },
   ja: {
@@ -56,6 +60,10 @@ const resources = {
       'Train': '列車',
       'Bus': 'バス',
       'Car': '車',
+      'Leg': '区間',
+      '次へ': '次へ',
+      'いざ、巨匠建築を巡る旅へ': 'いざ、巨匠建築を巡る旅へ',
+      'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！': 'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！',
     },
   },
 };
