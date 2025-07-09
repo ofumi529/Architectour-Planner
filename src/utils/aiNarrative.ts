@@ -136,7 +136,7 @@ async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string 
       'anthropic-beta': 'messages-2023-12-15',
     },
     body: JSON.stringify({
-      model: 'claude-3-sonnet-20240229',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 4000,
       temperature: 0.7,
       messages: [
