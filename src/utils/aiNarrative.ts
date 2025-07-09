@@ -70,15 +70,14 @@ JSON形式で以下のように回答してください：
 }`;
 }
 
-// OpenAI APIまたは他のAI APIを使用して文章生成
+// Anthropic Claude APIを使用して文章生成
 export async function generateAINarrative(
   works: ArchitecturalWork[],
   origin: string | null
 ): Promise<AIGeneratedNarrative> {
   try {
-    // この部分で実際のAI生成を行う
-    // 現在の実装では、構造化されたプロンプトベースの生成をシミュレート
-    const generatedContent = await simulateAIGeneration(works, origin);
+    // Claude APIを使用して紀行文を生成
+    const generatedContent = await generateWithClaudeAPI(works, origin);
     
     return {
       title: generatedContent.title,
@@ -88,23 +87,125 @@ export async function generateAINarrative(
       isGenerating: false
     };
   } catch (error) {
-    console.error('AI紀行文生成に失敗しました:', error);
-    return {
-      title: '建築巡礼の旅',
-      introduction: '素晴らしい建築作品を巡る旅が始まります...',
-      sections: works.map(work => ({
-        work,
-        locationContext: `${work.location.city}の美しい街並みの中で`,
-        narrative: `${work.architect}の「${work.name}」は、${work.year}年に完成した傑作です。${work.overview}`
-      })),
-      conclusion: '建築を通じて文化と歴史を学ぶ、かけがえのない旅の記憶となりました。',
-      isGenerating: false,
-      error: 'AI生成に失敗しました。基本的な紀行文を表示しています。'
-    };
+    console.error('Claude API紀行文生成に失敗しました:', error);
+    
+    // フォールバック: シミュレート生成を使用
+    try {
+      const fallbackContent = await simulateAIGeneration(works, origin);
+      return {
+        title: fallbackContent.title,
+        introduction: fallbackContent.introduction,
+        sections: fallbackContent.sections,
+        conclusion: fallbackContent.conclusion,
+        isGenerating: false,
+        error: 'Claude API接続に失敗しました。代替生成を使用しています。'
+      };
+    } catch (fallbackError) {
+      console.error('フォールバック生成も失敗しました:', fallbackError);
+      return {
+        title: '建築巡礼の旅',
+        introduction: '素晴らしい建築作品を巡る旅が始まります...',
+        sections: works.map(work => ({
+          work,
+          locationContext: `${work.location.city}の美しい街並みの中で`,
+          narrative: `${work.architect}の「${work.name}」は、${work.year}年に完成した傑作です。${work.overview}`
+        })),
+        conclusion: '建築を通じて文化と歴史を学ぶ、かけがえのない旅の記憶となりました。',
+        isGenerating: false,
+        error: 'AI生成に失敗しました。基本的な紀行文を表示しています。'
+      };
+    }
   }
 }
 
-// AI生成をシミュレートする関数（実際のAI APIの代替）
+// Anthropic Claude APIを使用して紀行文を生成
+async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string | null) {
+  const prompt = buildNarrativePrompt(works, origin);
+  
+  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error('Anthropic API キーが設定されていません。環境変数 VITE_ANTHROPIC_API_KEY を設定してください。');
+  }
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'anthropic-version': '2023-06-01',
+      'anthropic-beta': 'messages-2023-12-15',
+    },
+    body: JSON.stringify({
+      model: 'claude-3-sonnet-20240229',
+      max_tokens: 4000,
+      temperature: 0.7,
+      messages: [
+        {
+          role: 'user',
+          content: prompt
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Claude API エラー: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+  }
+
+  const data = await response.json();
+  const generatedText = data.content[0].text;
+
+  try {
+    // JSON形式のレスポンスをパース
+    const parsedResponse = JSON.parse(generatedText);
+    
+    // AIが生成したsectionsをAISection形式に変換
+    const sections: AISection[] = parsedResponse.sections.map((section: any) => {
+      const work = works.find(w => w.id === section.workId);
+      if (!work) {
+        throw new Error(`作品ID ${section.workId} が見つかりません`);
+      }
+      return {
+        work,
+        locationContext: section.locationContext,
+        narrative: section.narrative
+      };
+    });
+
+    return {
+      title: parsedResponse.title,
+      introduction: parsedResponse.introduction,
+      sections,
+      conclusion: parsedResponse.conclusion
+    };
+  } catch (parseError) {
+    console.error('Claude APIレスポンスの解析に失敗しました:', parseError);
+    console.error('生成されたテキスト:', generatedText);
+    
+    // パースに失敗した場合は、テキストから手動で抽出を試みる
+    return extractNarrativeFromText(generatedText, works);
+  }
+}
+
+// JSON解析に失敗した場合のフォールバック処理
+function extractNarrativeFromText(text: string, works: ArchitecturalWork[]) {
+  // 簡単なテキスト解析で紀行文を抽出
+  const lines = text.split('\n').filter(line => line.trim());
+  
+  return {
+    title: lines[0] || '建築巡礼の旅',
+    introduction: lines[1] || 'Claude APIが生成した建築作品を巡る旅の物語です。',
+    sections: works.map((work, index) => ({
+      work,
+      locationContext: `${work.location.city}の美しい街並みの中で`,
+      narrative: lines[index + 2] || `${work.architect}の「${work.name}」は、${work.year}年に完成した傑作です。${work.overview}`
+    })),
+    conclusion: lines[lines.length - 1] || '建築を通じて文化と歴史を学ぶ、かけがえのない旅の記憶となりました。'
+  };
+}
+
+// AI生成をシミュレートする関数（フォールバック用）
 async function simulateAIGeneration(works: ArchitecturalWork[], origin: string | null) {
   // 実際の生成処理をシミュレート
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -178,7 +279,7 @@ function generateCreativeIntroduction(works: ArchitecturalWork[], origin: string
   return introductions[Math.floor(Math.random() * introductions.length)];
 }
 
-function generateCreativeLocationContext(work: ArchitecturalWork, index: number, works: ArchitecturalWork[]): string {
+function generateCreativeLocationContext(work: ArchitecturalWork, index: number, _works: ArchitecturalWork[]): string {
   const { city, country } = work.location;
   
   const contexts = [
@@ -193,7 +294,7 @@ function generateCreativeLocationContext(work: ArchitecturalWork, index: number,
   
   if (index === 0) {
     return `${baseContext}この建築は、旅の始まりにふさわしい印象深い体験を提供してくれます。`;
-  } else if (index === works.length - 1) {
+  } else if (index === _works.length - 1) {
     return `${baseContext}この建築は、建築巡礼の旅を美しく締めくくる象徴的な存在です。`;
   } else {
     return `${baseContext}この建築は、旅の中で特別な意味を持つ重要な空間体験となります。`;

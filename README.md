@@ -7,6 +7,27 @@ A React + TypeScript single-page app for crafting custom tours of 20th-century a
 
 世界の名建築を巡る旅程を、ステップ・バイ・ステップのウィザードで直感的に作成できる React + TypeScript アプリケーションです。地図や写真ギャラリーから作品を選び、最適な巡回ルートを自動生成。総距離・総時間・総費用を即座に確認できます。
 
+## 🤖 AI紀行文生成機能
+
+このアプリケーションには、選択した建築作品に基づいて**Anthropic Claude API**を使用した動的な旅の紀行文生成機能が含まれています。
+
+### APIキーの設定
+
+1. `.env.example` ファイルを `.env` にコピーしてください
+2. [Anthropic Console](https://console.anthropic.com/) でAPIキーを取得
+3. `.env` ファイルに以下のように設定してください：
+
+```bash
+VITE_ANTHROPIC_API_KEY=your-actual-api-key-here
+```
+
+### 機能の詳細
+
+- **動的生成**: 選択された作品の組み合わせに応じて、毎回異なる紀行文を生成
+- **建築専門性**: 各作品の建築的特徴と歴史的意義を含む専門的な内容
+- **文化的文脈**: 各都市・国の文化的背景を織り込んだ豊かな表現
+- **フォールバック**: API接続に失敗した場合の代替生成機能
+
 ---
 
 ## 主な機能
