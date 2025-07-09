@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react';
 interface Props {
   works: ArchitecturalWork[];
   origin: string | null;
+  shouldGenerate: boolean;
+  onGenerationComplete?: () => void;
 }
 
-export default function TravelNarrativeComponent({ works, origin }: Props) {
+export default function TravelNarrativeComponent({ works, origin, shouldGenerate, onGenerationComplete }: Props) {
   const [narrative, setNarrative] = useState<AIGeneratedNarrative>({
     title: '',
     introduction: '',
@@ -28,11 +30,17 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
       return;
     }
 
+    // shouldGenerateがtrueの時のみ生成を開始
+    if (!shouldGenerate) {
+      return;
+    }
+
     // AI生成開始
     setNarrative(prev => ({ ...prev, isGenerating: true, error: undefined }));
     
     generateAINarrative(works, origin).then(generatedNarrative => {
       setNarrative(generatedNarrative);
+      onGenerationComplete?.();
     }).catch(error => {
       console.error('AI紀行文生成に失敗しました:', error);
       setNarrative({
@@ -43,10 +51,11 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
         isGenerating: false,
         error: 'AI生成に失敗しました'
       });
+      onGenerationComplete?.();
     });
-  }, [works, origin]);
+  }, [works, origin, shouldGenerate, onGenerationComplete]);
 
-  if (works.length === 0) {
+  if (works.length === 0 || (!shouldGenerate && narrative.sections.length === 0)) {
     return null;
   }
 

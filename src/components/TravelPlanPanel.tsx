@@ -19,6 +19,8 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
   const [routeNames, setRouteNames] = useState<string[]>([]);
   const [orderedWorks, setOrderedWorks] = useState<ArchitecturalWork[]>([]);
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
+  const [shouldGenerateNarrative, setShouldGenerateNarrative] = useState(false);
+  const [narrativeGenerated, setNarrativeGenerated] = useState(false);
 
   interface Segment { label: string; d: number; mode: TransportMode }
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -30,6 +32,8 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
     const ordered = planRoute(selected, originCoords);
     setRouteNames(ordered.map((w) => w.name));
     setOrderedWorks(ordered);
+    setShouldGenerateNarrative(false);
+    setNarrativeGenerated(false);
     const coords: [number, number][] = [originCoords, ...ordered.map((w) => [w.location.lat, w.location.lng]), originCoords] as [number, number][];
     // compute distance
     let total = 0;
@@ -61,7 +65,12 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
     <div>
       {/* Travel Narrative - Show after route generation */}
       {orderedWorks.length > 0 && (
-        <TravelNarrativeComponent works={orderedWorks} origin={origin} />
+        <TravelNarrativeComponent 
+          works={orderedWorks} 
+          origin={origin} 
+          shouldGenerate={shouldGenerateNarrative}
+          onGenerationComplete={() => setNarrativeGenerated(true)}
+        />
       )}
       
       <h2 className="font-semibold mb-2">{t('Travel Plan')}</h2>
@@ -111,6 +120,16 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
             }}
           >
             {t('Copy Share URL')}
+          </button>
+
+          <button
+            className="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs disabled:opacity-40"
+            disabled={narrativeGenerated}
+            onClick={() => {
+              setShouldGenerateNarrative(true);
+            }}
+          >
+            {narrativeGenerated ? '生成済み' : t('旅の気分を味わう')}
           </button>
         </div>
       )}

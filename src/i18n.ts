@@ -32,6 +32,7 @@ const resources = {
       '次へ': 'Next',
       'いざ、巨匠建築を巡る旅へ': 'Embark on a Journey to Masterpiece Architecture',
       'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！': 'First, please select your departure country. From there, your pilgrimage to masterpiece architecture begins!',
+      '旅の気分を味わう': 'Experience the Journey',
     },
   },
   ja: {
@@ -64,6 +65,7 @@ const resources = {
       '次へ': '次へ',
       'いざ、巨匠建築を巡る旅へ': 'いざ、巨匠建築を巡る旅へ',
       'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！': 'まずは出発国を選択してください。そこから巨匠建築巡礼がはじまります！',
+      '旅の気分を味わう': '旅の気分を味わう',
     },
   },
 };
