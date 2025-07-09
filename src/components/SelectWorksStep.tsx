@@ -15,7 +15,7 @@ export default function SelectWorksStep({ onNext }: Props) {
   const [mode, setMode] = useState<'map' | 'photo'>('map');
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
       {/* mode toggle */}
       <div className="flex justify-center gap-2 py-2 bg-gradient-to-r from-slate-800 via-stone-800 to-amber-900 text-[10px] uppercase tracking-wide text-amber-50 shadow-inner">
         <button
@@ -33,18 +33,22 @@ export default function SelectWorksStep({ onNext }: Props) {
       </div>
 
       {/* selector area */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-32">
         {mode === 'map' ? <MapView route={[]} /> : <PhotoSelector works={works} />}
       </div>
 
       {/* selected summary */}
-      <div className="border-t p-4 bg-stone-50">
+      <div className="border-t p-4 bg-stone-50 pb-20">
         <h3 className="text-sm font-semibold mb-2">選択済み作品 ({selected.length})</h3>
-        <div className="max-h-40 overflow-y-auto text-xs mb-3">
+        <div className="max-h-32 overflow-y-auto text-xs">
           <SelectedList />
         </div>
+      </div>
+
+      {/* Fixed button at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg z-50">
         <Button variant="primary" disabled={selected.length === 0} onClick={onNext} className="w-full">
-          ルートへ進む
+          ルートへ進む ({selected.length}件選択済み)
         </Button>
       </div>
     </div>
