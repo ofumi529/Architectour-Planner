@@ -154,8 +154,14 @@ async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string 
   const generatedText = data.content[0].text;
 
   try {
+    console.log('Claude API生成テキスト:', generatedText);
+    
+    // JSONの前後にある余分なテキストを除去
+    const cleanedText = generatedText.replace(/```json\n?/g, '').replace(/\n?```/g, '').trim();
+    console.log('クリーンアップ後のテキスト:', cleanedText);
+    
     // JSON形式のレスポンスをパース
-    const parsedResponse = JSON.parse(generatedText);
+    const parsedResponse = JSON.parse(cleanedText);
     
     // AIが生成したsectionsをAISection形式に変換
     const sections: AISection[] = parsedResponse.sections.map((section: any) => {
