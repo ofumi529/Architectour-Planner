@@ -5,6 +5,8 @@ import { planRoute, haversine } from '../utils/routePlanner';
 import { estimateDuration, estimateCost, TransportMode } from '../utils/transport';
 import { Polyline } from 'react-leaflet';
 import { useTranslation } from 'react-i18next';
+import TravelNarrativeComponent from './TravelNarrative';
+import { ArchitecturalWork } from '../types/models';
 
 interface Props {
   onRouteReady: (coords: [number, number][]) => void;
@@ -15,6 +17,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
   const { selected } = useSelection();
   const { t } = useTranslation();
   const [routeNames, setRouteNames] = useState<string[]>([]);
+  const [orderedWorks, setOrderedWorks] = useState<ArchitecturalWork[]>([]);
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
 
   interface Segment { label: string; d: number; mode: TransportMode }
@@ -26,6 +29,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
     if (!originCoords) return;
     const ordered = planRoute(selected, originCoords);
     setRouteNames(ordered.map((w) => w.name));
+    setOrderedWorks(ordered);
     const coords: [number, number][] = [originCoords, ...ordered.map((w) => [w.location.lat, w.location.lng]), originCoords] as [number, number][];
     // compute distance
     let total = 0;
@@ -55,6 +59,11 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
 
   return (
     <div>
+      {/* Travel Narrative - Show after route generation */}
+      {orderedWorks.length > 0 && (
+        <TravelNarrativeComponent works={orderedWorks} origin={origin} />
+      )}
+      
       <h2 className="font-semibold mb-2">{t('Travel Plan')}</h2>
       <div className="space-y-2">
         <div className="text-sm">{t('Origin')}: {origin ?? t('None')}</div>

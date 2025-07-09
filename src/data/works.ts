@@ -30,6 +30,7 @@ export const works: ArchitecturalWork[] = rows.map(r => ({
     country: r.country!,
   },
   description: r.description!,
+  overview: r.overview!,
   imageUrl: imageMap[r.id as string] ?? '',
   visitDuration: Number(r.visitDuration),
   category: r.category!,

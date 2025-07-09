@@ -11,6 +11,7 @@ export interface ArchitecturalWork {
     country: string;
   };
   description: string;
+  overview: string;
   imageUrl: string;
   visitDuration: number; // minutes
   category: string;
