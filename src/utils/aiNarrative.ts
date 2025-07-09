@@ -126,18 +126,11 @@ export async function generateAINarrative(
 async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string | null) {
   const prompt = buildNarrativePrompt(works, origin);
   
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('Anthropic API キーが設定されていません。環境変数 VITE_ANTHROPIC_API_KEY を設定してください。');
-  }
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  // Vercel serverless function経由でClaude APIを呼び出し
+  const response = await fetch('/api/claude', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'messages-2023-12-15',
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
