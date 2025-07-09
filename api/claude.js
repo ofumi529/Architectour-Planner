@@ -18,6 +18,8 @@ export default async function handler(req, res) {
   // Check for API key in both possible environment variables
   const apiKey = process.env.ANTHROPIC_API_KEY || process.env.VITE_ANTHROPIC_API_KEY;
   console.log('API Key available:', !!apiKey);
+  console.log('API Key length:', apiKey ? apiKey.length : 'N/A');
+  console.log('API Key starts with:', apiKey ? apiKey.substring(0, 15) + '...' : 'N/A');
   console.log('Environment variables:', Object.keys(process.env).filter(key => key.includes('ANTHROPIC')));
   
   if (!apiKey) {
@@ -35,6 +37,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'anthropic-version': '2023-06-01',
+        'x-api-key': apiKey,
       },
       body: JSON.stringify(req.body)
     });
