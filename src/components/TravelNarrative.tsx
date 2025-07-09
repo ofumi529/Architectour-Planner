@@ -34,7 +34,7 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
     generateAINarrative(works, origin).then(generatedNarrative => {
       setNarrative(generatedNarrative);
     }).catch(error => {
-      console.error('Failed to generate AI narrative:', error);
+      console.error('AI紀行文生成に失敗しました:', error);
       setNarrative({
         title: 'AI生成エラー',
         introduction: '申し訳ございません。紀行文の生成に失敗しました。',
@@ -109,21 +109,18 @@ export default function TravelNarrativeComponent({ works, origin }: Props) {
           {/* Sections */}
           <div className="space-y-4">
             {narrative.sections.map((section, index) => {
-              const work = works.find(w => w.id === section.workId);
-              if (!work) return null;
-
               return (
-                <div key={section.workId} className="border-l-2 border-stone-200 pl-4">
+                <div key={section.work.id} className="border-l-2 border-stone-200 pl-4">
                   <div className="flex items-start gap-3 mb-2">
                     <div className="bg-stone-700 text-white text-xs px-2 py-1 rounded-full font-mono">
                       {index + 1}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-stone-800 text-sm">
-                        {work.name}
+                        {section.work.name}
                       </h4>
                       <p className="text-xs text-stone-500">
-                        {work.architect} ({work.year}) - {work.location.city}, {work.location.country}
+                        {section.work.architect} ({section.work.year}) - {section.work.location.city}, {section.work.location.country}
                       </p>
                     </div>
                   </div>

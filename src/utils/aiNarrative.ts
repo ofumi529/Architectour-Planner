@@ -76,9 +76,6 @@ export async function generateAINarrative(
   origin: string | null
 ): Promise<AIGeneratedNarrative> {
   try {
-    // まず、Claude自身の能力を使って生成を試みる
-    const prompt = buildNarrativePrompt(works, origin);
-    
     // この部分で実際のAI生成を行う
     // 現在の実装では、構造化されたプロンプトベースの生成をシミュレート
     const generatedContent = await simulateAIGeneration(works, origin);
@@ -91,7 +88,7 @@ export async function generateAINarrative(
       isGenerating: false
     };
   } catch (error) {
-    console.error('AI narrative generation failed:', error);
+    console.error('AI紀行文生成に失敗しました:', error);
     return {
       title: '建築巡礼の旅',
       introduction: '素晴らしい建築作品を巡る旅が始まります...',
@@ -122,8 +119,8 @@ async function simulateAIGeneration(works: ArchitecturalWork[], origin: string |
   const introduction = generateCreativeIntroduction(works, origin, architects, countries);
   
   // 各作品の紀行文を生成
-  const sections = works.map((work, index) => ({
-    workId: work.id,
+  const sections: AISection[] = works.map((work, index) => ({
+    work,
     locationContext: generateCreativeLocationContext(work, index, works),
     narrative: generateCreativeNarrative(work, index, works)
   }));
@@ -203,7 +200,7 @@ function generateCreativeLocationContext(work: ArchitecturalWork, index: number,
   }
 }
 
-function generateCreativeNarrative(work: ArchitecturalWork, index: number, works: ArchitecturalWork[]): string {
+function generateCreativeNarrative(work: ArchitecturalWork, _index: number, _works: ArchitecturalWork[]): string {
   const { name, architect, year, overview, visitDuration } = work;
   
   const narratives = [
