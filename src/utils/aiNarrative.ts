@@ -279,7 +279,7 @@ function generateCreativeIntroduction(works: ArchitecturalWork[], origin: string
   return introductions[Math.floor(Math.random() * introductions.length)];
 }
 
-function generateCreativeLocationContext(work: ArchitecturalWork, index: number, _works: ArchitecturalWork[]): string {
+function generateCreativeLocationContext(work: ArchitecturalWork, index: number, works: ArchitecturalWork[]): string {
   const { city, country } = work.location;
   
   const contexts = [
@@ -294,7 +294,7 @@ function generateCreativeLocationContext(work: ArchitecturalWork, index: number,
   
   if (index === 0) {
     return `${baseContext}この建築は、旅の始まりにふさわしい印象深い体験を提供してくれます。`;
-  } else if (index === _works.length - 1) {
+  } else if (index === works.length - 1) {
     return `${baseContext}この建築は、建築巡礼の旅を美しく締めくくる象徴的な存在です。`;
   } else {
     return `${baseContext}この建築は、旅の中で特別な意味を持つ重要な空間体験となります。`;
