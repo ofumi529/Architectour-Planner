@@ -1,8 +1,26 @@
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS headers - restrict to your domain(s)
+  const allowedOrigins = [
+    'https://architectour-planner.vercel.app',
+    'https://yourdomain.com', // Replace with your actual domain
+    ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000', 'http://localhost:5173'] : [])
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'false');
+  
+  // Security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Content-Security-Policy', "default-src 'self'");
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
@@ -19,14 +37,8 @@ export default async function handler(req, res) {
   const rawApiKey = process.env.ANTHROPIC_API_KEY || process.env.VITE_ANTHROPIC_API_KEY;
   const apiKey = rawApiKey ? rawApiKey.trim() : null;
   
-  console.log('API Key available:', !!apiKey);
-  console.log('API Key length:', apiKey ? apiKey.length : 'N/A');
-  console.log('API Key starts with:', apiKey ? apiKey.substring(0, 15) + '...' : 'N/A');
-  console.log('Raw API Key length:', rawApiKey ? rawApiKey.length : 'N/A');
-  console.log('Environment variables:', Object.keys(process.env).filter(key => key.includes('ANTHROPIC')));
-  
   if (!apiKey) {
-    console.error('No API key found in environment variables');
+    console.error('API key not configured');
     res.status(500).json({ error: 'Anthropic API key not configured' });
     return;
   }
