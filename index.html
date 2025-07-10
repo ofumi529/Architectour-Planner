@@ -1,9 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Architectour Planner</title>
+    
+    <!-- Basic Meta -->
+    <title>Architectour Planner - 建築巨匠の傑作を巡る旅をプランニング</title>
+    <meta name="description" content="世界の名建築を効率的に巡る旅行プランを作成。ル・コルビュジエ、フランク・ロイド・ライト、安藤忠雄、ザハ・ハディドなど巨匠の作品を最適ルートで訪問し、AI生成の旅行紀行文で特別な建築ツアーを体験できます。" />
+    <meta name="keywords" content="建築,旅行,プランニング,ル・コルビュジエ,フランク・ロイド・ライト,安藤忠雄,ザハ・ハディド,建築ツアー,世界遺産,名建築" />
+    <meta name="author" content="Architectour Planner" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://architectour-planner.vercel.app/" />
+    <meta property="og:title" content="Architectour Planner - 建築巨匠の傑作を巡る旅をプランニング" />
+    <meta property="og:description" content="世界の名建築を効率的に巡る旅行プランを作成。ル・コルビュジエ、フランク・ロイド・ライト、安藤忠雄、ザハ・ハディドなど巨匠の作品を最適ルートで訪問し、AI生成の旅行紀行文で特別な建築ツアーを体験。" />
+    <meta property="og:image" content="https://architectour-planner.vercel.app/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:site_name" content="Architectour Planner" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://architectour-planner.vercel.app/" />
+    <meta property="twitter:title" content="Architectour Planner - 建築巨匠の傑作を巡る旅をプランニング" />
+    <meta property="twitter:description" content="世界の名建築を効率的に巡る旅行プランを作成。AI生成の旅行紀行文で特別な建築ツアーを体験。" />
+    <meta property="twitter:image" content="https://architectour-planner.vercel.app/og-image.svg" />
+    <meta property="twitter:creator" content="@architectour" />
+    
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="msapplication-TileColor" content="#1e293b" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Architectour Planner",
+      "description": "世界の名建築を効率的に巡る旅行プランを作成できるWebアプリケーション",
+      "url": "https://architectour-planner.vercel.app/",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "Architectour Planner"
+      },
+      "keywords": "建築,旅行,プランニング,ルート最適化,AI,紀行文"
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body class="h-screen w-screen overflow-hidden">
     <div id="root" class="h-full w-full"></div>

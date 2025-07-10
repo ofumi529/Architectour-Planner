@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import './i18n';
 import { SelectionProvider } from './context/SelectionContext';
 import StepProgress from './components/StepProgress';
@@ -6,10 +6,16 @@ import OriginStep from './components/OriginStep';
 import SelectWorksStep from './components/SelectWorksStep';
 import PlanStep from './components/PlanStep';
 import { countryCenters } from './data/countryCenters';
+import { updateOGPFromURL } from './utils/ogp';
 
 export default function App() {
   const [step, setStep] = useState<'origin' | 'select' | 'plan'>('origin');
   const [origin, setOrigin] = useState<string | null>(null);
+
+  // URLパラメータからOGPを更新
+  useEffect(() => {
+    updateOGPFromURL();
+  }, []);
 
   return (
     <Suspense fallback={

@@ -7,6 +7,7 @@ import { Polyline } from 'react-leaflet';
 import { useTranslation } from 'react-i18next';
 import TravelNarrativeComponent from './TravelNarrative';
 import { NarrativeRateLimiter } from '../utils/rateLimiter';
+import { generateRouteOGP, updateOGP } from '../utils/ogp';
 import { ArchitecturalWork } from '../types/models';
 
 interface Props {
@@ -65,6 +66,10 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
     setCostUsd(Math.round(totalC));
 
     onRouteReady(coords);
+    
+    // Update OGP for route
+    const ogpData = generateRouteOGP(ordered, origin || undefined);
+    updateOGP(ogpData);
   };
 
   return (
