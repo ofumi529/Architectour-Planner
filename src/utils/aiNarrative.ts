@@ -24,7 +24,8 @@ function buildNarrativePrompt(works: ArchitecturalWork[], origin: string | null)
   const cities = works.map(w => w.location.city);
   
   const worksDetails = works.map((work, index) => {
-    return `${index + 1}. ${work.name} (${work.architect}, ${work.year}年)
+    return `${index + 1}. 作品ID: ${work.id}
+   作品名: ${work.name} (${work.architect}, ${work.year}年)
    場所: ${work.location.city}, ${work.location.country}
    概要: ${work.overview}
    カテゴリー: ${work.category}
@@ -57,13 +58,15 @@ ${worksDetails}
 - 作品間の関連性や対比を意識する
 - 詩的で美しい日本語を使用する
 
-JSON形式で以下のように回答してください：
+JSON形式で以下のように回答してください。
+**重要**: sectionsの各要素のworkIdには、上記の「訪問作品詳細」に記載されている正確な作品IDを使用してください：
+
 {
   "title": "旅のタイトル",
   "introduction": "導入文",
   "sections": [
     {
-      "workId": "作品ID",
+      "workId": "上記リストの正確な作品ID（例: daxing_airport）",
       "locationContext": "場所の文脈説明",
       "narrative": "作品の紀行文"
     }
