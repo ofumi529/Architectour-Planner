@@ -19,6 +19,13 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
   });
   
   const isGeneratingRef = useRef(false);
+  const hasGeneratedRef = useRef(false);
+  const lastGenerationKeyRef = useRef<string | null>(null);
+
+  // 安定した生成完了コールバック
+  const handleGenerationComplete = useCallback(() => {
+    onGenerationComplete?.();
+  }, [onGenerationComplete]);
 
   useEffect(() => {
     if (works.length === 0) {
@@ -29,6 +36,8 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
         conclusion: '',
         isGenerating: false
       });
+      hasGeneratedRef.current = false;
+      lastGenerationKeyRef.current = null;
       return;
     }
 
@@ -37,19 +46,39 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
       return;
     }
 
-    // 重複実行を防ぐ
+    // 重複実行を防ぐ - より厳密なチェック
     if (isGeneratingRef.current) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('AI生成中のため、重複実行をスキップします');
+      }
+      return;
+    }
+
+    // 同じ条件での再生成を防ぐ
+    const generationKey = `${works.map(w => w.id).sort().join('-')}-${origin}`;
+    if (hasGeneratedRef.current && lastGenerationKeyRef.current === generationKey) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('同じ条件での再生成をスキップします:', generationKey);
+      }
       return;
     }
 
     // AI生成開始
+    if (process.env.NODE_ENV === 'development') {
+      console.log('AI紀行文生成を開始します:', generationKey);
+    }
     isGeneratingRef.current = true;
+    hasGeneratedRef.current = true;
+    lastGenerationKeyRef.current = generationKey;
     setNarrative(prev => ({ ...prev, isGenerating: true, error: undefined }));
     
     generateAINarrative(works, origin).then(generatedNarrative => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('AI紀行文生成が完了しました');
+      }
       setNarrative(generatedNarrative);
       isGeneratingRef.current = false;
-      onGenerationComplete?.();
+      handleGenerationComplete();
     }).catch(error => {
       console.error('AI紀行文生成に失敗しました:', error);
       setNarrative({
@@ -61,9 +90,18 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
         error: 'AI生成に失敗しました'
       });
       isGeneratingRef.current = false;
-      onGenerationComplete?.();
+      handleGenerationComplete();
     });
-  }, [works, origin, shouldGenerate, onGenerationComplete]);
+  }, [works, origin, shouldGenerate, handleGenerationComplete]);
+
+  // shouldGenerateがfalseになった時にリセット
+  useEffect(() => {
+    if (!shouldGenerate) {
+      isGeneratingRef.current = false;
+      hasGeneratedRef.current = false;
+      lastGenerationKeyRef.current = null;
+    }
+  }, [shouldGenerate]);
 
   if (works.length === 0 || (!shouldGenerate && narrative.sections.length === 0)) {
     return null;
