@@ -1,6 +1,6 @@
 import { ArchitecturalWork } from '../types/models';
 import { generateAINarrative, AIGeneratedNarrative } from '../utils/aiNarrative';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface Props {
   works: ArchitecturalWork[];
@@ -17,6 +17,8 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
     conclusion: '',
     isGenerating: true
   });
+  
+  const isGeneratingRef = useRef(false);
 
   useEffect(() => {
     if (works.length === 0) {
@@ -35,11 +37,18 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
       return;
     }
 
+    // 重複実行を防ぐ
+    if (isGeneratingRef.current) {
+      return;
+    }
+
     // AI生成開始
+    isGeneratingRef.current = true;
     setNarrative(prev => ({ ...prev, isGenerating: true, error: undefined }));
     
     generateAINarrative(works, origin).then(generatedNarrative => {
       setNarrative(generatedNarrative);
+      isGeneratingRef.current = false;
       onGenerationComplete?.();
     }).catch(error => {
       console.error('AI紀行文生成に失敗しました:', error);
@@ -51,6 +60,7 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
         isGenerating: false,
         error: 'AI生成に失敗しました'
       });
+      isGeneratingRef.current = false;
       onGenerationComplete?.();
     });
   }, [works, origin, shouldGenerate, onGenerationComplete]);
