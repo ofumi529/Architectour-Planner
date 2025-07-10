@@ -4,6 +4,7 @@ import { ArchitecturalWork } from '../types/models';
 interface SelectionContextProps {
   selected: ArchitecturalWork[];
   toggleSelection: (work: ArchitecturalWork) => void;
+  clearSelection: () => void;
 }
 
 const SelectionContext = createContext<SelectionContextProps | undefined>(undefined);
@@ -27,8 +28,12 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   };
 
+  const clearSelection = () => {
+    setSelected([]);
+  };
+
   return (
-    <SelectionContext.Provider value={{ selected, toggleSelection }}>
+    <SelectionContext.Provider value={{ selected, toggleSelection, clearSelection }}>
       {children}
     </SelectionContext.Provider>
   );

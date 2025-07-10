@@ -11,8 +11,17 @@ interface Props {
 }
 
 export default function SelectWorksStep({ onNext }: Props) {
-  const { selected } = useSelection();
+  const { selected, clearSelection } = useSelection();
   const [mode, setMode] = useState<'map' | 'photo'>('map');
+
+  const handleClearSelection = () => {
+    if (selected.length > 0) {
+      const confirmed = window.confirm(`選択中の${selected.length}件の作品をすべてクリアしますか？`);
+      if (confirmed) {
+        clearSelection();
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col h-full relative">
@@ -47,7 +56,17 @@ export default function SelectWorksStep({ onNext }: Props) {
 
       {/* selected summary */}
       <div className="border-t p-6 bg-stone-50 pb-20">
-        <h3 className="text-base lg:text-lg font-bold mb-2">選択済み作品 ({selected.length})</h3>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base lg:text-lg font-bold">選択済み作品 ({selected.length})</h3>
+          {selected.length > 0 && (
+            <button
+              onClick={handleClearSelection}
+              className="text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-full transition-colors border border-red-200 hover:border-red-300"
+            >
+              🗑️ すべてクリア
+            </button>
+          )}
+        </div>
         <div className="max-h-32 overflow-y-auto text-sm">
           <SelectedList />
         </div>
@@ -55,9 +74,25 @@ export default function SelectWorksStep({ onNext }: Props) {
 
       {/* Fixed button at bottom */}
       <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t shadow-lg z-50">
-        <Button variant="primary" size="lg" disabled={selected.length === 0} onClick={onNext} className="w-full text-lg">
-          ルートへ進む ({selected.length}件選択済み)
-        </Button>
+        <div className="flex gap-3">
+          {selected.length > 0 && (
+            <button
+              onClick={handleClearSelection}
+              className="px-4 py-3 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+            >
+              🗑️ クリア
+            </button>
+          )}
+          <Button 
+            variant="primary" 
+            size="lg" 
+            disabled={selected.length === 0} 
+            onClick={onNext} 
+            className="flex-1 text-lg"
+          >
+            ルートへ進む ({selected.length}件選択済み)
+          </Button>
+        </div>
       </div>
     </div>
   );
