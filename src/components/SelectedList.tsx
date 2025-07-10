@@ -7,7 +7,6 @@ export default function SelectedList() {
 
   return (
     <div>
-      <h2 className="font-semibold mb-2 text-lg">{t('Selected Works')}</h2>
       {selected.length === 0 ? (
         <p className="text-sm text-gray-500">{t('No work selected')}</p>
       ) : (
