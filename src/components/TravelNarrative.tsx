@@ -108,19 +108,19 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-stone-200 p-6 mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-stone-800 font-display">
+    <div className="glass-card border-none deep-shadow p-8 mb-8 light-ray">
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h2 className="text-2xl font-bold font-display tracking-wide text-slate-800 drop-shadow-sm">
           📖 旅の紀行文
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 relative z-10">
           {narrative.isGenerating && (
-            <div className="flex items-center gap-2 text-xs text-amber-600">
-              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-amber-600"></div>
+            <div className="flex items-center gap-2 text-sm font-medium text-amber-700">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-amber-700"></div>
               生成中...
             </div>
           )}
-          <span className="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">
+          <span className="text-sm font-semibold text-slate-700 glass-panel px-3 py-2 rounded-lg">
             {works.length}作品の旅
           </span>
         </div>

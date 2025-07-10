@@ -129,6 +129,12 @@ export async function generateAINarrative(
 async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string | null) {
   const prompt = buildNarrativePrompt(works, origin);
   
+  console.log('Claude API呼び出し開始:', {
+    worksCount: works.length,
+    origin,
+    timestamp: new Date().toISOString()
+  });
+  
   // Vercel serverless function経由でClaude APIを呼び出し
   const response = await fetch('/api/claude', {
     method: 'POST',
@@ -137,7 +143,7 @@ async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string 
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 4000,
+      max_tokens: 3000,
       temperature: 0.7,
       messages: [
         {
@@ -150,10 +156,19 @@ async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string 
 
   if (!response.ok) {
     const errorData = await response.json();
+    console.error('Claude API エラー:', {
+      status: response.status,
+      errorData,
+      timestamp: new Date().toISOString()
+    });
     throw new Error(`Claude API エラー: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
   }
 
   const data = await response.json();
+  console.log('Claude API成功:', {
+    responseSize: JSON.stringify(data).length,
+    timestamp: new Date().toISOString()
+  });
   const generatedText = data.content[0].text;
 
   try {

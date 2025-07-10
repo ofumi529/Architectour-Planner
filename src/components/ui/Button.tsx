@@ -13,19 +13,24 @@ export default function Button({
   ...rest
 }: Props) {
   const variantClasses: Record<string, string> = {
-    primary: 'bg-amber-700 text-white hover:bg-amber-800 shadow-sm',
-    secondary: 'bg-slate-600 text-white hover:bg-slate-700',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
+    primary: 'wood-accent text-white font-semibold tracking-wide architectural-transition glass-reflection',
+    secondary: 'steel-button architectural-transition',
+    danger: 'bg-red-600 text-white hover:bg-red-700 deep-shadow',
   };
   const sizeClasses: Record<string, string> = {
-    sm: 'px-2 py-1 text-xs',
-    md: 'px-3 py-1.5 text-sm',
-    lg: 'px-4 py-2 text-base',
+    sm: 'px-3 py-2 text-xs',
+    md: 'px-4 py-2.5 text-sm',
+    lg: 'px-6 py-3 text-base',
   };
   return (
     <button
       {...rest}
-      className={clsx('rounded transition', variantClasses[variant], sizeClasses[size], className)}
+      className={clsx(
+        'rounded-lg font-medium construct-in relative overflow-hidden',
+        variantClasses[variant], 
+        sizeClasses[size], 
+        className
+      )}
     />
   );
 }

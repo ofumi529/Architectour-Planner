@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Card from './ui/Card';
 import { useSelection } from '../context/SelectionContext';
 import { planRoute, haversine } from '../utils/routePlanner';
@@ -21,6 +21,11 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
   const [shouldGenerateNarrative, setShouldGenerateNarrative] = useState(false);
   const [narrativeGenerated, setNarrativeGenerated] = useState(false);
+
+  // 安定した生成完了コールバック
+  const handleNarrativeComplete = useCallback(() => {
+    setNarrativeGenerated(true);
+  }, []);
 
   interface Segment { label: string; d: number; mode: TransportMode }
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -69,7 +74,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
           works={orderedWorks} 
           origin={origin} 
           shouldGenerate={shouldGenerateNarrative}
-          onGenerationComplete={() => setNarrativeGenerated(true)}
+          onGenerationComplete={handleNarrativeComplete}
         />
       )}
       
