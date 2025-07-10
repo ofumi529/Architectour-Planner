@@ -302,3 +302,225 @@ body,
     transform: translateY(0) scale(1);
   }
 }
+
+/* ===== 建築的フォーム要素 ===== */
+
+/* 建築的セレクトボックス */
+.architectural-select {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23e2e8f0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.architectural-select:focus {
+  border-color: #f59e0b;
+  box-shadow: 
+    0 0 0 3px rgba(245, 158, 11, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.architectural-select:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+}
+
+.architectural-select option {
+  background: #1e293b;
+  color: #e2e8f0;
+  font-weight: 500;
+  padding: 8px;
+}
+
+/* 建築的セレクトのフレーム装飾 */
+.architectural-select-frame {
+  position: relative;
+  display: inline-block;
+}
+
+.architectural-select-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #2c3e50, #34495e, #2c3e50);
+  border-radius: 14px;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.architectural-select-frame:hover::before {
+  background: linear-gradient(45deg, #34495e, #4a6741, #34495e);
+}
+
+/* 建築的入力フィールド */
+.architectural-input {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #e2e8f0;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  background-image: 
+    linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+}
+
+.architectural-input:focus {
+  border-color: #f59e0b;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 0 3px rgba(245, 158, 11, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 2px 6px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.architectural-input::placeholder {
+  color: rgba(226, 232, 240, 0.5);
+  font-style: italic;
+}
+
+/* 建築的テキストエリア */
+.architectural-textarea {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #e2e8f0;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.architectural-textarea:focus {
+  border-color: #f59e0b;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 0 3px rgba(245, 158, 11, 0.15),
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    inset 0 4px 8px rgba(255, 255, 255, 0.1),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 建築的フォームグループ */
+.architectural-form-group {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.architectural-form-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  font-family: 'Cinzel', serif;
+}
+
+.architectural-form-label::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: linear-gradient(to bottom, #f59e0b, #d97706);
+  margin-right: 8px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+/* 建築的チェックボックス・ラジオボタン */
+.architectural-checkbox,
+.architectural-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+.architectural-radio {
+  border-radius: 50%;
+}
+
+.architectural-checkbox:checked,
+.architectural-radio:checked {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: #f59e0b;
+  box-shadow: 
+    0 0 0 2px rgba(245, 158, 11, 0.3),
+    0 4px 12px rgba(245, 158, 11, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.architectural-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.architectural-radio:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* 建築的フォーカスリング */
+.architectural-focus-ring:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(245, 158, 11, 0.2),
+    0 0 0 6px rgba(245, 158, 11, 0.1);
+}
