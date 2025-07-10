@@ -156,11 +156,11 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
                 </div>
                 
                 {section.work.imageUrl && (
-                  <div className="flex-shrink-0 w-full sm:w-32 h-32 sm:h-24 order-1 sm:order-2">
+                  <div className="flex-shrink-0 w-full sm:w-48 h-48 sm:h-36 order-1 sm:order-2">
                     <img
                       src={section.work.imageUrl}
                       alt={section.work.name}
-                      className="w-full h-full object-cover rounded-lg shadow-sm border border-stone-200 hover:shadow-md transition-shadow"
+                      className="w-full h-full object-cover rounded-lg shadow-md border border-stone-200 hover:shadow-lg transition-shadow"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}

@@ -6,7 +6,7 @@ export default function SelectedList() {
   const { t } = useTranslation();
 
   return (
-    <div>
+    <>
       {selected.length === 0 ? (
         <p className="text-sm text-gray-500">{t('No work selected')}</p>
       ) : (
@@ -16,6 +16,6 @@ export default function SelectedList() {
           ))}
         </ul>
       )}
-    </div>
+    </>
   );
 }

@@ -47,7 +47,7 @@ export default function SelectWorksStep({ onNext }: Props) {
 
       {/* selected summary */}
       <div className="border-t p-6 bg-stone-50 pb-20">
-        <h3 className="text-base lg:text-lg font-bold mb-3">選択済み作品 ({selected.length})</h3>
+        <h3 className="text-base lg:text-lg font-bold mb-2">選択済み作品 ({selected.length})</h3>
         <div className="max-h-32 overflow-y-auto text-sm">
           <SelectedList />
         </div>
