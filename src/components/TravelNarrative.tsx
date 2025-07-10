@@ -164,11 +164,11 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
           </div>
 
           {/* Sections */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             {narrative.sections.map((section, index) => {
               return (
                 <div key={section.work.id} className="border-l-2 border-stone-200 pl-4">
-                  <div className="flex items-start gap-3 mb-2">
+                  <div className="flex items-start gap-3 mb-3">
                     <div className="bg-stone-700 text-white text-xs px-2 py-1 rounded-full font-mono">
                       {index + 1}
                     </div>
@@ -182,13 +182,31 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
                     </div>
                   </div>
                   
-                  <div className="text-xs text-stone-600 mb-2 italic">
+                  <div className="text-xs text-stone-600 mb-3 italic">
                     {section.locationContext}
                   </div>
                   
-                  <p className="text-sm text-stone-700 leading-relaxed">
-                    {section.narrative}
-                  </p>
+                  {/* Text and Image Layout */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-start">
+                    <div className="flex-1 order-2 sm:order-1">
+                      <p className="text-sm text-stone-700 leading-relaxed">
+                        {section.narrative}
+                      </p>
+                    </div>
+                    
+                    {section.work.imageUrl && (
+                      <div className="flex-shrink-0 w-full sm:w-32 h-32 sm:h-24 order-1 sm:order-2">
+                        <img
+                          src={section.work.imageUrl}
+                          alt={section.work.name}
+                          className="w-full h-full object-cover rounded-lg shadow-sm border border-stone-200 hover:shadow-md transition-shadow"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
