@@ -10,7 +10,7 @@ export default function LanguageToggle() {
   return (
     <button
       onClick={toggle}
-      className="architectural-transition steel-button px-4 py-2.5 text-xs font-bold tracking-wider uppercase relative overflow-hidden rounded-xl border border-slate-500 min-w-[140px]"
+      className="architectural-transition steel-button px-4 py-3 text-sm font-bold tracking-wider uppercase relative overflow-hidden rounded-xl border border-slate-500 min-w-[140px]"
     >
       {/* 建築的な内部構造 */}
       <div className="absolute inset-0 pointer-events-none">

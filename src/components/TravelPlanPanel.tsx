@@ -158,7 +158,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
                   <td className="px-2 py-1 text-left whitespace-nowrap max-w-[12rem] truncate" title={s.label}>{s.label}</td>
                   <td className="px-2 py-1 text-center whitespace-nowrap">
                     <select
-                      className="architectural-select text-xs min-w-[100px] py-2 px-3"
+                      className="architectural-select text-sm min-w-[120px] py-2 px-3"
                       value={s.mode}
                       onChange={(e) => {
                         const newMode = e.target.value as TransportMode;

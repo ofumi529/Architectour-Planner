@@ -110,7 +110,7 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
   return (
     <div className="glass-card border-none deep-shadow p-8 mb-8 light-ray">
       <div className="flex items-center justify-between mb-6 relative z-10">
-        <h2 className="text-2xl font-bold font-display tracking-wide text-slate-800 drop-shadow-sm">
+        <h2 className="text-3xl lg:text-4xl font-bold font-display tracking-wide text-slate-800 drop-shadow-sm">
           📖 旅の紀行文
         </h2>
         <div className="flex items-center gap-3 relative z-10">
@@ -120,7 +120,7 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
               生成中...
             </div>
           )}
-          <span className="text-sm font-semibold text-slate-700 glass-panel px-3 py-2 rounded-lg">
+          <span className="text-base font-semibold text-slate-700 glass-panel px-4 py-3 rounded-lg">
             {works.length}作品の旅
           </span>
         </div>
@@ -151,14 +151,14 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
         <div className="space-y-6">
           {/* Title */}
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-stone-700 font-display">
+            <h3 className="text-2xl lg:text-3xl font-bold text-stone-700 font-display tracking-wide">
               {narrative.title}
             </h3>
           </div>
 
           {/* Introduction */}
-          <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r">
-            <p className="text-sm text-stone-700 leading-relaxed">
+          <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r">
+            <p className="text-base lg:text-lg text-stone-700 leading-relaxed">
               {narrative.introduction}
             </p>
           </div>
@@ -168,28 +168,28 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
             {narrative.sections.map((section, index) => {
               return (
                 <div key={section.work.id} className="border-l-2 border-stone-200 pl-4">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="bg-stone-700 text-white text-xs px-2 py-1 rounded-full font-mono">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="bg-stone-700 text-white text-sm px-3 py-2 rounded-full font-mono font-bold">
                       {index + 1}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-stone-800 text-sm">
+                      <h4 className="font-bold text-stone-800 text-lg lg:text-xl">
                         {section.work.name}
                       </h4>
-                      <p className="text-xs text-stone-500">
+                      <p className="text-sm text-stone-500 mt-1">
                         {section.work.architect} ({section.work.year}) - {section.work.location.city}, {section.work.location.country}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="text-xs text-stone-600 mb-3 italic">
+                  <div className="text-sm text-stone-600 mb-4 italic font-medium">
                     {section.locationContext}
                   </div>
                   
                   {/* Text and Image Layout */}
                   <div className="flex flex-col sm:flex-row gap-4 items-start">
                     <div className="flex-1 order-2 sm:order-1">
-                      <p className="text-sm text-stone-700 leading-relaxed">
+                      <p className="text-base lg:text-lg text-stone-700 leading-relaxed">
                         {section.narrative}
                       </p>
                     </div>
@@ -213,15 +213,15 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
           </div>
 
           {/* Conclusion */}
-          <div className="bg-stone-50 border border-stone-200 p-4 rounded">
-            <p className="text-sm text-stone-700 leading-relaxed italic">
+          <div className="bg-stone-50 border border-stone-200 p-6 rounded">
+            <p className="text-base lg:text-lg text-stone-700 leading-relaxed italic font-medium">
               {narrative.conclusion}
             </p>
           </div>
 
           {/* Generation Notice */}
           <div className="text-center">
-            <p className="text-xs text-stone-400">
+            <p className="text-sm text-stone-400">
               ✨ この紀行文は選択された作品に基づいて動的に生成されました
             </p>
           </div>

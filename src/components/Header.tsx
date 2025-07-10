@@ -20,19 +20,19 @@ export default function Header({ onOpenLeft, onOpenRight, origin, setOrigin }: P
         <Button variant="secondary" size="sm" className="lg:hidden steel-button industrial-border p-3" onClick={onOpenLeft}>
           <Bars3Icon className="w-6 h-6" />
         </Button>
-        <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold font-display text-white drop-shadow-lg whitespace-nowrap tracking-wider leading-tight">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl lg:text-4xl font-bold font-display text-white drop-shadow-lg whitespace-nowrap tracking-wider leading-tight">
             {t('Architectour Planner')}
           </h1>
-          <div className="h-1 w-24 bg-gradient-to-r from-amber-500 via-amber-300 to-transparent rounded-full"></div>
+          <div className="h-1 w-32 bg-gradient-to-r from-amber-500 via-amber-300 to-transparent rounded-full"></div>
         </div>
       </div>
 
       {/* 中央セクション - 建築的な間隔 */}
       <div className="flex-1 flex justify-center z-10">
-        <div className="steel-gradient rounded-xl p-1 min-w-[200px]">
-          <div className="bg-black/20 rounded-lg px-4 py-2 backdrop-blur-sm">
-            <span className="text-white/90 text-sm font-medium tracking-wide">
+        <div className="steel-gradient rounded-xl p-1 min-w-[240px]">
+          <div className="bg-black/20 rounded-lg px-6 py-3 backdrop-blur-sm">
+            <span className="text-white/90 text-base lg:text-lg font-semibold tracking-wide">
               建築巨匠の旅
             </span>
           </div>

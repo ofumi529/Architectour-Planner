@@ -25,10 +25,10 @@ export default function Button({
   };
 
   const sizeClasses: Record<string, string> = {
-    sm: 'px-4 py-3 text-xs min-h-[36px]',
-    md: 'px-6 py-3.5 text-sm min-h-[44px]',
-    lg: 'px-8 py-4 text-base min-h-[52px]',
-    xl: 'px-10 py-5 text-lg min-h-[60px]'
+    sm: 'px-4 py-3 text-sm min-h-[40px]',
+    md: 'px-6 py-4 text-base min-h-[48px]',
+    lg: 'px-8 py-5 text-lg min-h-[56px]',
+    xl: 'px-10 py-6 text-xl min-h-[64px]'
   };
 
   return (

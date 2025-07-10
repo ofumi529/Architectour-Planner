@@ -38,9 +38,9 @@ export default function Card({
       {/* 建築的なヘッダー */}
       {title && (
         <div className="relative z-10 mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-2 h-8 bg-gradient-to-b from-amber-500 to-amber-700 rounded-full"></div>
-            <h3 className="font-bold text-lg font-display tracking-wide text-slate-800 uppercase">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-2 h-10 bg-gradient-to-b from-amber-500 to-amber-700 rounded-full"></div>
+            <h3 className="font-bold text-xl lg:text-2xl font-display tracking-wide text-slate-800 uppercase">
               {title}
             </h3>
           </div>
