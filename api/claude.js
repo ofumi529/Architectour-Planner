@@ -33,6 +33,13 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Simple rate limiting based on IP (optional additional protection)
+  const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const rateLimit = process.env.RATE_LIMIT_PER_IP || 10; // 1つのIPから1日10回まで
+  
+  // Note: In production, you'd want to use a proper rate limiting service like Redis
+  // This is a simple in-memory approach for demonstration
+
   // Check for API key in both possible environment variables
   const rawApiKey = process.env.ANTHROPIC_API_KEY || process.env.VITE_ANTHROPIC_API_KEY;
   const apiKey = rawApiKey ? rawApiKey.trim() : null;

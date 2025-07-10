@@ -6,6 +6,7 @@ import { estimateDuration, estimateCost, TransportMode } from '../utils/transpor
 import { Polyline } from 'react-leaflet';
 import { useTranslation } from 'react-i18next';
 import TravelNarrativeComponent from './TravelNarrative';
+import { NarrativeRateLimiter } from '../utils/rateLimiter';
 import { ArchitecturalWork } from '../types/models';
 
 interface Props {
@@ -129,13 +130,22 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
 
           <button
             className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 transition-colors"
-            disabled={narrativeGenerated}
+            disabled={narrativeGenerated || !NarrativeRateLimiter.canGenerate()}
             onClick={() => {
               setShouldGenerateNarrative(true);
             }}
+            title={!NarrativeRateLimiter.canGenerate() ? 
+              `生成制限に達しました。リセットまで: ${NarrativeRateLimiter.getResetTimeFormatted()}` : ''}
           >
-            {narrativeGenerated ? '生成済み' : t('旅の気分を味わう')}
+            {narrativeGenerated ? '生成済み' : 
+             !NarrativeRateLimiter.canGenerate() ? '制限到達' :
+             t('旅の気分を味わう')}
           </button>
+          
+          {/* レート制限情報の表示 */}
+          <div className="text-xs text-gray-500 mt-1">
+            残り{NarrativeRateLimiter.getRemainingCount()}回/日
+          </div>
         </div>
       )}
 

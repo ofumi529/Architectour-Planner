@@ -1,5 +1,6 @@
 import { ArchitecturalWork } from '../types/models';
 import { generateAINarrative, AIGeneratedNarrative } from '../utils/aiNarrative';
+import { NarrativeRateLimiter } from '../utils/rateLimiter';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface Props {
@@ -18,6 +19,7 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
     isGenerating: true
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rateLimitStatus, setRateLimitStatus] = useState(NarrativeRateLimiter.getUsageStatus());
   
   const isGeneratingRef = useRef(false);
   const hasGeneratedRef = useRef(false);
@@ -44,6 +46,22 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
 
     // shouldGenerateがtrueの時のみ生成を開始
     if (!shouldGenerate) {
+      return;
+    }
+
+    // レート制限チェック
+    const currentStatus = NarrativeRateLimiter.getUsageStatus();
+    setRateLimitStatus(currentStatus);
+    
+    if (!currentStatus.canGenerate) {
+      setNarrative({
+        title: '生成制限に達しました',
+        introduction: `1日の紀行文生成上限（5回）に達しました。${currentStatus.resetTime}にリセットされます。`,
+        sections: [],
+        conclusion: '',
+        isGenerating: false,
+        error: `制限リセットまで: ${currentStatus.resetTime}`
+      });
       return;
     }
 
@@ -77,6 +95,10 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
       if (process.env.NODE_ENV === 'development') {
         console.log('AI紀行文生成が完了しました');
       }
+      // 生成成功時にカウンターを増やす
+      NarrativeRateLimiter.incrementUsage();
+      setRateLimitStatus(NarrativeRateLimiter.getUsageStatus());
+      
       setNarrative(generatedNarrative);
       isGeneratingRef.current = false;
       handleGenerationComplete();
