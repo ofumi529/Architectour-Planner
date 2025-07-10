@@ -92,21 +92,21 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
         {distanceKm !== null && (
-          <Card className="p-2 text-center bg-slate-50">
-            <div className="text-[10px] font-medium uppercase tracking-wide">{t('Total Distance')}</div>
-            <div className="text-lg font-semibold">{distanceKm} km</div>
+          <Card className="p-4 text-center bg-slate-50">
+            <div className="text-sm font-bold uppercase tracking-wide text-slate-700">{t('Total Distance')}</div>
+            <div className="text-2xl font-bold text-slate-800">{distanceKm} km</div>
           </Card>
         )}
         {durationH !== null && (
-          <Card className="p-2 text-center bg-emerald-50">
-            <div className="text-[10px] font-medium uppercase tracking-wide">{t('Total Time')}</div>
-            <div className="text-lg font-semibold">{durationH} h</div>
+          <Card className="p-4 text-center bg-emerald-50">
+            <div className="text-sm font-bold uppercase tracking-wide text-emerald-700">{t('Total Time')}</div>
+            <div className="text-2xl font-bold text-emerald-800">{durationH} h</div>
           </Card>
         )}
         {costUsd !== null && (
-          <Card className="p-2 text-center bg-amber-50">
-            <div className="text-[10px] font-medium uppercase tracking-wide">{t('Total Cost')}</div>
-            <div className="text-lg font-semibold">${costUsd}</div>
+          <Card className="p-4 text-center bg-amber-50">
+            <div className="text-sm font-bold uppercase tracking-wide text-amber-700">{t('Total Cost')}</div>
+            <div className="text-2xl font-bold text-amber-800">${costUsd}</div>
           </Card>
         )}
       </div>
@@ -115,7 +115,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
         <div className="flex gap-2 mt-2">
           
           <button
-            className="px-2 py-1 bg-purple-600 text-white rounded text-xs"
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
             onClick={() => {
               import('../utils/share').then(({ generateShareUrl }) => {
                 const url = generateShareUrl({ origin: origin ?? '', selectedIds: selected.map(w => w.id), segments: segments.map(s => ({ mode: s.mode })) });
@@ -128,7 +128,7 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
           </button>
 
           <button
-            className="px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs disabled:opacity-40"
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 transition-colors"
             disabled={narrativeGenerated}
             onClick={() => {
               setShouldGenerateNarrative(true);
@@ -140,23 +140,23 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
       )}
 
       {segments.length > 0 && (<>
-        <div className="overflow-x-auto max-w-full mt-2">
-          <table className="text-xs w-full table-auto border-collapse">
-            <thead className="bg-gray-100 sticky top-0">
+        <div className="overflow-x-auto max-w-full mt-4">
+          <table className="text-sm lg:text-base w-full table-auto border-collapse bg-white rounded-lg shadow-sm">
+            <thead className="bg-gray-50 sticky top-0">
               <tr>
-                <th className="px-2 py-1 text-left whitespace-nowrap">{t('Leg')}</th>
-                <th className="px-2 py-1 text-center whitespace-nowrap">{t('Mode')}</th>
-                <th className="px-2 py-1 text-right whitespace-nowrap">{t('Distance')}</th>
-                <th className="px-2 py-1 text-right whitespace-nowrap">{t('Time')}</th>
-                <th className="px-2 py-1 text-right whitespace-nowrap">{t('Cost')}</th>
+                <th className="px-4 py-3 text-left whitespace-nowrap font-bold text-gray-700">{t('Leg')}</th>
+                <th className="px-4 py-3 text-center whitespace-nowrap font-bold text-gray-700">{t('Mode')}</th>
+                <th className="px-4 py-3 text-right whitespace-nowrap font-bold text-gray-700">{t('Distance')}</th>
+                <th className="px-4 py-3 text-right whitespace-nowrap font-bold text-gray-700">{t('Time')}</th>
+                <th className="px-4 py-3 text-right whitespace-nowrap font-bold text-gray-700">{t('Cost')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
 
               {segments.map((s, idx) => (
-                <tr key={idx} className="border-t">
-                  <td className="px-2 py-1 text-left whitespace-nowrap max-w-[12rem] truncate" title={s.label}>{s.label}</td>
-                  <td className="px-2 py-1 text-center whitespace-nowrap">
+                <tr key={idx} className="border-t hover:bg-gray-50 transition-colors">
+                  <td className="px-4 py-3 text-left whitespace-nowrap max-w-[16rem] truncate font-medium" title={s.label}>{s.label}</td>
+                  <td className="px-4 py-3 text-center whitespace-nowrap">
                     <select
                       className="architectural-select text-sm min-w-[120px] py-2 px-3"
                       value={s.mode}
@@ -171,9 +171,9 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
                       <option value="car">{t('Car')}</option>
                     </select>
                   </td>
-                  <td className="px-2 py-1 text-right whitespace-nowrap">{s.d} km</td>
-                  <td className="px-2 py-1 text-right whitespace-nowrap">{Math.round(estimateDuration(s.d, s.mode))} h</td>
-                  <td className="px-2 py-1 text-right whitespace-nowrap">${Math.round(estimateCost(s.d, s.mode))}</td>
+                  <td className="px-4 py-3 text-right whitespace-nowrap font-semibold text-blue-700">{s.d} km</td>
+                  <td className="px-4 py-3 text-right whitespace-nowrap font-semibold text-emerald-700">{Math.round(estimateDuration(s.d, s.mode))} h</td>
+                  <td className="px-4 py-3 text-right whitespace-nowrap font-semibold text-amber-700">${Math.round(estimateCost(s.d, s.mode))}</td>
                 </tr>
               ))}
             </tbody>
@@ -182,9 +182,9 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
       </>
       )}
       {routeNames.length > 0 && (
-        <ol className="list-decimal ml-4 text-sm space-y-1">
+        <ol className="list-decimal ml-6 text-base space-y-2 mt-4">
           {routeNames.map((n, i) => (
-            <li key={i}>{n}</li>
+            <li key={i} className="font-medium text-gray-700">{n}</li>
           ))}
         </ol>
       )}
