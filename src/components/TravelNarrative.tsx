@@ -309,7 +309,7 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
                   href={shareUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mr-4 flex items-center gap-2 text-amber-50 hover:text-amber-200 transition-colors p-2 rounded-full hover:bg-black/20"
+                  className="mr-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg shadow-lg transition-transform hover:scale-105"
                   title="X でシェア"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
