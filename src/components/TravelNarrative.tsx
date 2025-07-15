@@ -7,10 +7,11 @@ interface Props {
   works: ArchitecturalWork[];
   origin: string | null;
   shouldGenerate: boolean;
+  autoOpen?: boolean;
   onGenerationComplete?: () => void;
 }
 
-export default function TravelNarrativeComponent({ works, origin, shouldGenerate, onGenerationComplete }: Props) {
+export default function TravelNarrativeComponent({ works, origin, shouldGenerate, autoOpen = false, onGenerationComplete }: Props) {
   const [narrative, setNarrative] = useState<AIGeneratedNarrative>({
     title: '',
     introduction: '',
@@ -22,9 +23,12 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
   // X(旧Twitter) シェア URL
   const shareUrl = useMemo(() => {
     if (!narrative.title) return '';
-    const text = `${narrative.title}\n${window.location.href} #ArchitectourPlanner`;
+    const ids = works.map(w => w.id).join(',');
+    const baseUrl = `${window.location.origin}${window.location.pathname}`;
+    const url = `${baseUrl}?works=${ids}${origin ? `&origin=${encodeURIComponent(origin)}` : ''}`;
+    const text = `${narrative.title}\n${url} #ArchitectourPlanner`;
     return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  }, [narrative.title]);
+  }, [narrative.title, works, origin]);
   const [rateLimitStatus, setRateLimitStatus] = useState(NarrativeRateLimiter.getUsageStatus());
   
   const isGeneratingRef = useRef(false);
@@ -33,8 +37,11 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
 
   // 安定した生成完了コールバック
   const handleGenerationComplete = useCallback(() => {
+    if (autoOpen) {
+      setIsModalOpen(true);
+    }
     onGenerationComplete?.();
-  }, [onGenerationComplete]);
+  }, [autoOpen, onGenerationComplete]);
 
   useEffect(() => {
     if (works.length === 0) {

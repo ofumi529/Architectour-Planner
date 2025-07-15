@@ -6,11 +6,13 @@ interface Props {
   origin: string | null;
   originCoords: [number, number] | null;
   onRestart: () => void;
+  autoGenerate?: boolean;
+  autoNarrative?: boolean;
 }
 
 import { useState } from 'react';
 
-export default function PlanStep({ origin, originCoords, onRestart }: Props) {
+export default function PlanStep({ origin, originCoords, onRestart, autoGenerate = false, autoNarrative = false }: Props) {
     const [routeCoords, setRouteCoords] = useState<[number, number][]>([]);
 
   return (
@@ -26,6 +28,8 @@ export default function PlanStep({ origin, originCoords, onRestart }: Props) {
             onRouteReady={setRouteCoords}
             origin={origin}
             originCoords={originCoords}
+            autoGenerate={autoGenerate}
+            autoNarrative={autoNarrative}
           />
         </div>
       </div>
