@@ -85,15 +85,17 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
       )}
       
       <h2 className="font-semibold mb-2">{t('Travel Plan')}</h2>
-      <div className="space-y-2">
+      <div className="space-y-2 text-center">
         <div className="text-sm">{t('Origin')}: {origin ?? t('None')}</div>
-        <button
-          className="mb-2 px-3 py-1 bg-amber-700 hover:bg-amber-800 text-white text-sm rounded disabled:opacity-40"
-          disabled={selected.length < 2 || !originCoords}
-          onClick={generate}
-        >
-          {t('Generate Route')}
-        </button>
+        {segments.length === 0 && (
+          <button
+            className="mx-auto mb-4 px-6 py-3 bg-amber-700 hover:bg-amber-800 text-white text-base font-semibold rounded-lg disabled:opacity-40 shadow-lg w-full sm:w-auto"
+            disabled={selected.length < 2 || !originCoords}
+            onClick={generate}
+          >
+            {t('Generate Route')}
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
@@ -118,23 +120,11 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
       </div>
 
       {segments.length > 0 && (
-        <div className="flex gap-2 mt-2">
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
           
-          <button
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
-            onClick={() => {
-              import('../utils/share').then(({ generateShareUrl }) => {
-                const url = generateShareUrl({ origin: origin ?? '', selectedIds: selected.map(w => w.id), segments: segments.map(s => ({ mode: s.mode })) });
-                navigator.clipboard.writeText(url);
-                alert(t('Share URL copied'));
-              });
-            }}
-          >
-            {t('Copy Share URL')}
-          </button>
 
           <button
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium disabled:opacity-40 transition-colors"
+            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-base font-semibold rounded-lg disabled:opacity-40 shadow-lg transition-colors w-full sm:w-auto"
             disabled={narrativeGenerated || !NarrativeRateLimiter.canGenerate()}
             onClick={() => {
               setShouldGenerateNarrative(true);
@@ -144,11 +134,11 @@ export default function TravelPlanPanel({ onRouteReady, origin, originCoords }: 
           >
             {narrativeGenerated ? '生成済み' : 
              !NarrativeRateLimiter.canGenerate() ? '制限到達' :
-             t('旅の気分を味わう')}
+             t('旅の紀行文を詠む')}
           </button>
           
           {/* レート制限情報の表示 */}
-          <div className="text-xs text-gray-500 mt-1">
+          <div className="basis-full text-center text-xs text-gray-500 mt-1">
             残り{NarrativeRateLimiter.getRemainingCount()}回/日
           </div>
         </div>

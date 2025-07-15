@@ -80,6 +80,16 @@ export async function generateAINarrative(
   works: ArchitecturalWork[],
   origin: string | null
 ): Promise<AIGeneratedNarrative> {
+  // ローカル開発時は直接フォールバック生成を使用
+  if (import.meta.env.DEV) {
+    console.info('DEV モードのためフォールバック生成を使用します');
+    return {
+      ...(await simulateAIGeneration(works, origin)),
+      isGenerating: false,
+      error: 'DEV モード: Claude API を呼び出していません。'
+    };
+  }
+
   try {
     // Claude APIを使用して紀行文を生成
     const generatedContent = await generateWithClaudeAPI(works, origin);
@@ -155,13 +165,14 @@ async function generateWithClaudeAPI(works: ArchitecturalWork[], origin: string 
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    // エラーボディが存在しない場合もあるためテキストで取得
+    const errorText = await response.text();
     console.error('Claude API エラー:', {
       status: response.status,
-      errorData,
+      body: errorText,
       timestamp: new Date().toISOString()
     });
-    throw new Error(`Claude API エラー: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+    throw new Error(`Claude API エラー: ${response.status}`);
   }
 
   const data = await response.json();

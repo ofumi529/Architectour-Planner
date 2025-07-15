@@ -9,7 +9,7 @@ export default function PhotoSelector({ works }: Props) {
   const { selected, toggleSelection } = useSelection();
 
   return (
-    <div className="h-full overflow-y-auto p-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 bg-neutral-50">
+    <div className="min-h-full p-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 bg-neutral-50">
       {works.map((w) => {
         const active = !!selected.find(s=>s.id===w.id);
         return (

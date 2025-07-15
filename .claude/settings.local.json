@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git config:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git pull:*)",
+      "Bash(npm run build:*)",
+      "Bash(chmod:*)",
+      "Bash(rm:*)",
+      "Bash(npm install:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:ofumi529.github.io)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(gh auth:*)",
+      "Bash(rg:*)",
+      "Bash(npm config:*)",
+      "Bash(true)",
+      "Bash(ss:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm update:*)"
+    ],
+    "deny": []
+  }
+}

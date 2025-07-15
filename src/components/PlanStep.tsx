@@ -21,7 +21,7 @@ export default function PlanStep({ origin, originCoords, onRestart }: Props) {
           <MapView route={routeCoords} />
         </div>
         {/* Travel plan stats */}
-        <div className="overflow-y-auto p-4 bg-gray-50 min-h-0 pb-20">
+        <div className="overflow-y-auto p-4 bg-gray-50 min-h-0 pb-40">
           <TravelPlanPanel
             onRouteReady={setRouteCoords}
             origin={origin}
