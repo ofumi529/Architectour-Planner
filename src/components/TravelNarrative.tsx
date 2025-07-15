@@ -1,7 +1,7 @@
 import { ArchitecturalWork } from '../types/models';
 import { generateAINarrative, AIGeneratedNarrative } from '../utils/aiNarrative';
 import { NarrativeRateLimiter } from '../utils/rateLimiter';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 interface Props {
   works: ArchitecturalWork[];
@@ -19,6 +19,12 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
     isGenerating: true
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // X(旧Twitter) シェア URL
+  const shareUrl = useMemo(() => {
+    if (!narrative.title) return '';
+    const text = `${narrative.title}\n${window.location.href} #ArchitectourPlanner`;
+    return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  }, [narrative.title]);
   const [rateLimitStatus, setRateLimitStatus] = useState(NarrativeRateLimiter.getUsageStatus());
   
   const isGeneratingRef = useRef(false);
@@ -297,6 +303,20 @@ export default function TravelNarrativeComponent({ works, origin, shouldGenerate
               <h2 className="text-2xl lg:text-3xl font-bold font-display text-amber-50">
                 📖 旅の紀行文
               </h2>
+              {/* Share on X */}
+              {shareUrl && (
+                <a
+                  href={shareUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mr-4 flex items-center gap-2 text-amber-50 hover:text-amber-200 transition-colors p-2 rounded-full hover:bg-black/20"
+                  title="X でシェア"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                    <path d="M18.29 3H21l-6.6 7.53L22 21h-5.25l-4.18-5.06L7.84 21H5l6.9-7.87L2 3h5.3l3.94 4.77L18.29 3z"/>
+                  </svg>
+                </a>
+              )}
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="text-amber-50 hover:text-amber-200 transition-colors p-2 rounded-full hover:bg-black/20"
